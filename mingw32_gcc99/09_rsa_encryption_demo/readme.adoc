@@ -1,0 +1,222 @@
+= RSA Encryption and Decryption -Simple demo
+Author: Jayakumar Sengottuvel
+Date: 15.10.2023
+
+== Table of Contents
+
+[role="contents"]
+* <<introduction>>Introduction
+* <<program-overview>>Program Overview
+* <<installation-and-setup>>Installation and Setup
+* <<usage>>Usage
+* <<code-structure>>Code Structure
+* <<functionality>>Functionality
+* <<sample-execution>>Sample Execution
+* <<key-management>>Key Management
+* <<best-practices>>Best Practices
+* <<troubleshooting>>Troubleshooting
+* <<contributing>>Contributing
+* <<license>>License
+
+[[introduction]]
+== 1. Introduction
+
+=== 1.1. Purpose
+
+The purpose of this documentation is to guide developers in understanding and using the RSA Encryption and Decryption program. This program demonstrates RSA encryption and decryption using the OpenSSL library, providing a basic example for educational and reference purposes.
+
+=== 1.2. Scope
+
+This documentation covers the source code of the program and its associated Makefile, providing insights into the program's architecture, usage, and best practices. Developers can use this document as a reference when working with the program's source code.
+
+=== 1.3. Prerequisites
+
+Before using the program and its Makefile, ensure you have the following prerequisites:
+
+* A C compiler (e.g., GCC)
+* The OpenSSL library and development files
+
+[[program-overview]]
+== 2. Program Overview
+
+=== 2.1. Architecture
+
+The program is structured as follows:
+
+* The source code is divided into several C source files, each serving a specific purpose.
+* The program uses the OpenSSL library for cryptographic operations and key management.
+
+=== 2.2. Key Components
+
+The key components of the program and Makefile include:
+
+* `rsa_demo.c`: The main program that orchestrates RSA encryption and decryption.
+* `rsa_encrypt.c`: Handles RSA encryption, loading a public key, and encrypting a sample message.
+* `rsa_decrypt.c`: Manages RSA decryption, loading a private key, and decrypting previously encrypted data.
+* `rsa_helper.c`: Contains helper functions for key loading, encryption, and decryption.
+* Public and private key PEM files (e.g., `public_key.pem` and `private_key.pem`).
+* `encrypted` and `decrypted` buffers for storing data.
+
+[[installation-and-setup]]
+== 3. Installation and Setup
+
+=== 3.1. Prerequisites
+
+Before you can use the program and its Makefile, ensure that you have the following prerequisites in place:
+
+* A C compiler, such as GCC
+* The OpenSSL library, including its development files and headers
+
+Here is setup instruction for required toolchain  https://github.com/JSengottuvel/CodeExamples/blob/main/mingw32_gcc99/00_build_env/readme.adoc
+
+=== 3.2. Compilation
+
+To compile the program, use the following command:
+
+```
+make
+```
+
+=== 3.3. Configuration
+
+The program does not require specific configuration. Ensure that you have the necessary key files (PEM files) and specify their paths in the code.
+
+[[usage]]
+== 4. Usage
+
+=== 4.1. Encryption
+
+To perform encryption, call the `main_encrypt()` function in `rsa_demo.c`. This function loads the public key, encrypts a message, and prints the resulting encrypted data.
+
+=== 4.2. Decryption
+
+To perform decryption, call the `main_decrypt()` function in `rsa_demo.c`. This function loads the private key, decrypts the encrypted data, and prints the decrypted message.
+
+[[code-structure]]
+== 5. Code Structure
+
+=== 5.1. `rsa_demo.c`
+
+`rsa_demo.c` is the main program that orchestrates RSA encryption and decryption.
+
+=== 5.2. `rsa_encrypt.c`
+
+`rsa_encrypt.c` handles RSA encryption. It loads a public key, encrypts a sample message, and prints the encrypted data.
+
+=== 5.3. `rsa_decrypt.c`
+
+`rsa_decrypt.c` is responsible for RSA decryption. It loads a private key, decrypts previously encrypted data, and prints the decrypted message.
+
+=== 5.4. `rsa_helper.c`
+
+`rsa_helper.c` contains helper functions for key loading, encryption, and decryption. It includes functions like `load_public_key`, `load_private_key`, `rsa_public_encrypt`, and `rsa_private_decrypt`.
+
+=== 5.5. `applink.c`
+
+`applink.c` is required to load openssl dependencies and drivers for program execution.
+
+[[functionality]]
+== 6. Functionality
+
+=== 6.1. Encryption
+
+The `main_encrypt` function in `rsa_encrypt.c`:
+* Loads a public key from a PEM file.
+* Encrypts a sample message using the public key.
+
+=== 6.2. Decryption
+
+The `main_decrypt` function in `rsa_decrypt.c`:
+* Loads a private key from a PEM file.
+* Decrypts previously encrypted data using the private key.
+
+=== 6.3. Key Loading
+
+The `rsa_helper.c` file contains functions for loading RSA keys from PEM files:
+* `load_public_key`: Loads a public key from a file.
+* `load_private_key`: Loads a private key from a file.
+
+=== 6.4. Error Handling
+
+The program provides basic error handling for key loading and cryptographic operations. It prints error messages to the standard error stream for diagnostic purposes.
+
+[[sample-execution]]
+== 7. Sample Execution
+
+=== 7.1. How to Run
+
+To run the program:
+1. Compile the program using the compilation command provided in <<installation-and-setup>>section.
+2. Ensure that public and private key PEM files exist in the specified locations. The following command can be used create a keys required for testing this application.
+
+     ```
+     make keys
+     ```
+3. Execute the compiled `rsa_demo` program.
+
+     ```
+     make demo
+     ```
+
+=== 7.2. Expected Output
+
+The program will print the results of encryption and decryption. For encryption, it will display the encrypted data, and for decryption, it will show the decrypted message.
+
+[[key-management]]
+== 8. Key Management
+
+=== 8.1. Generating Keys
+
+To use this program, you need to generate RSA key pairs (public and private keys). OpenSSL provides tools for generating keys. Refer to OpenSSL documentation or online resources for key generation instructions.
+
+Alternativelay, The following command can be used to create a keys required for testing this application
+     ```
+     make keys
+     ```
+
+=== 8.2. Using Existing Keys
+
+You can use existing public and private key PEM files. Ensure that the file paths are correctly specified in the code.
+
+[[best-practices]]
+== 9. Best Practices
+
+* Securely handle key files to keep private keys private.
+* Implement proper memory management for dynamic data.
+* Extend error handling for production use to provide more detailed diagnostics.
+
+[[troubleshooting]]
+== 10. Troubleshooting
+
+=== 10.1. Common Issues
+
+* Key file not found.
+* Encryption or decryption failure.
+* OpenSSL library-related issues.
+
+=== 10.2. Debugging Tips
+
+* Check file paths and file permissions.
+* Enable debugging output or error messages.
+* Use OpenSSL error functions to diagnose issues.
+
+[[contributing]]
+== 11. Contributing
+
+=== 11.1. Code Contributions
+
+If you'd like to contribute to the project, please follow these steps:
+1. Fork the project repository.
+2. Make your changes or improvements.
+3. Submit a pull request to the original repository.
+
+=== 11.2. Reporting Issues
+
+If you encounter any issues or have suggestions for improvement, please create an issue on the project's GitHub repository to provide feedback and engage with the development community.
+
+[[license]]
+== 12. License
+
+MIT License
+
+Copyright (c) 2023 Jayakumar Sengottuvel
