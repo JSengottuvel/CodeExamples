@@ -1,0 +1,59 @@
+= Toolchain for MinGW GCC C99 (32 bit)
+Author: Jayakumar Sengottuvel
+:imagesdir: images
+
+== Toolchain
+
+It is necessary to install the following tools (specific version) and configure the PATH variable as recommended to get started with the demo projects quickly.
+
+The tools necessary are installed in a fixed root path. "C:\software\". Please adjust the path information in the commands and examples if your are installing the tools  in different path.
+
+=== MinGW for Windows  - 32 bit version (i686)
+
+GCC-13.2.0 with MinGW-W64 runtime version 11  (32 bit version)
+
+https://github.com/niXman/mingw-builds-binaries/releases
+
+i686-13.2.0-release-win32-dwarf-ucrt-rt_v11-rev0.7z
+
+https://github.com/niXman/mingw-builds-binaries/releases/download/13.2.0-rt_v11-rev0/i686-13.2.0-release-win32-dwarf-ucrt-rt_v11-rev0.7z
+
+Extract the files to C:\Software\mingw32
+
+ADD to PATH: 
+
+C:\Software\mingw32\bin
+
+=== GnuWin32 make utility
+
+Download "Complete package, except sources"	Setup  from below link https://gnuwin32.sourceforge.net/packages/make.htm
+
+size: 3384653  bytes, 25 November 2006, Md5sum: 8ae51379d1f3eef8360df4e674f17d6d
+
+ADD to PATH: 
+
+C:\software\GnuWin32\bin
+
+
+===  Win32 OpenSSL 1.1.1 (LTS)
+
+https://slproweb.com/products/Win32OpenSSL.html
+
+Win32 OpenSSL v1.1.1w  MSI	54MB Installer	
+Installs Win32 OpenSSL v1.1.1w (Only install this if you need 32-bit OpenSSL for Windows. Note that this is a default build of OpenSSL and is subject to local and state laws. More information can be found in the legal agreement of the installation.
+
+ADD to PATH: 
+
+C:\Software\OpenSSL-Win32
+C:\Software\OpenSSL-Win32\bin
+
+
+=== Additional tools
+
+Git for windows
+
+https://gitforwindows.org/
+
+Git GUI for windows (TortoiseGit)
+
+https://tortoisegit.org/download/

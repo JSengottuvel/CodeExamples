@@ -1,0 +1,10 @@
+= Code examaples for MinGW GCC C99 
+Author: Jayakumar Sengottuvel
+:imagesdir: images
+
+== Toolchain
+
+Toolchain setup instruction located in sub-folder ./00_build_env
+
+Copyright (c) 2023 Jayakumar Sengottuvel
+
