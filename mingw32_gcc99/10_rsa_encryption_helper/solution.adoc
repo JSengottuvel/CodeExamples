@@ -1,0 +1,222 @@
+= RSA Encryption and Decryption for Binary Data
+Author: Jayakumar Sengottuvel
+Date: 15.10.2023
+
+This guide demonstrates how to encrypt and decrypt binary data using RSA encryption and the OpenSSL library. We'll perform encryption in one program and decryption in another program, saving the encrypted and decrypted data to separate files.
+
+== Prerequisites
+
+Before starting, make sure you have the OpenSSL library installed on your system.
+
+=== Step 1: Generate RSA Key Pair
+
+First, generate an RSA key pair using OpenSSL. You can do this with the following commands:
+
+[source,shell]
+----
+# Generate a 2048-bit RSA private key
+openssl genpkey -algorithm RSA -out private_key.pem
+
+# Extract the public key from the private key
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+----
+
+=== Step 2: Encrypt Binary Data
+
+In this step, you will encrypt binary data (e.g., a binary file) using the public key and save the encrypted data to a file.
+
+[source,c]
+----
+#include <stdio.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include "rsa_helper.h"
+
+int main() {
+    const char *public_key_file = ".\\data\\public_key.pem";
+    const char *input_file = ".\\data\\input.dat";
+    const char *output_file = ".\\data\\encrypted.dat";
+
+    FILE *input = fopen(input_file, "rb");
+    if (!input) {
+        perror("Failed to open input file");
+        return 1;
+    }
+
+    FILE *output = fopen(output_file, "wb");
+    if (!output) {
+        perror("Failed to open output file");
+        fclose(input);
+        return 1;
+    }
+    printf("\n read RSA public key.");
+    RSA *rsa = load_public_key(public_key_file);
+    if (!rsa) {
+        fprintf(stderr, "Failed to load the public key.\n");
+        return 1;
+    }
+    printf("\n RSA public key read SUCCESSFULL");
+    unsigned char plaintext[245]; // 2048-bit RSA key with PKCS1.5 padding can encrypt up to 245 bytes
+    printf("\n step1.");
+    int bytes_read;
+    while ((bytes_read = fread(plaintext, 1, sizeof(plaintext), input)) > 0) {
+        printf("\n segment...");
+        unsigned char encrypted[256]; // Adjust the buffer size accordingly
+        int encrypted_len = RSA_public_encrypt(bytes_read, plaintext, encrypted, rsa, RSA_PKCS1_PADDING);
+        if (encrypted_len == -1) {
+            ERR_print_errors_fp(stderr);
+            RSA_free(rsa);
+            fclose(input);
+            fclose(output);
+            printf("\n encryption failed...");
+            return 1;
+        }
+        fwrite(encrypted, 1, encrypted_len, output);
+    }
+
+    RSA_free(rsa);
+    fclose(input);
+    fclose(output);
+    return 0;
+}
+----
+
+=== Step 3: Decrypt Binary Data
+
+Create a separate program to decrypt the binary data using the RSA private key and save the decrypted data to a file.
+
+[source,c]
+----
+#include <stdio.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include "rsa_helper.h"
+
+int main() {
+    const char *private_key_file = ".\\data\\private_key.pem";
+    const char *encrypted_file = ".\\data\\encrypted.dat";
+    const char *decrypted_file = ".\\data\\decrypted.dat";
+    
+    FILE *encrypted_input = fopen(encrypted_file, "rb");
+    if (!encrypted_input) {
+        perror("Failed to open encrypted input file");
+        return 1;
+    }
+    
+    FILE *decrypted_output = fopen(decrypted_file, "wb");
+    if (!decrypted_output) {
+        perror("Failed to open decrypted output file");
+        fclose(encrypted_input);
+        return 1;
+    }
+    
+    RSA *rsa = load_private_key(private_key_file);
+    if (!rsa) {
+        fprintf(stderr, "Failed to load the private key.\n");
+        return 1;
+    }
+    
+    unsigned char encrypted[256]; // Adjust the buffer size accordingly
+    unsigned char decrypted[245];
+    
+    int bytes_read;
+    while ((bytes_read = fread(encrypted, 1, sizeof(encrypted), encrypted_input)) > 0) {
+        int decrypted_len = RSA_private_decrypt(bytes_read, encrypted, decrypted, rsa, RSA_PKCS1_PADDING);
+        if (decrypted_len == -1) {
+            ERR_print_errors_fp(stderr);
+            RSA_free(rsa);
+            fclose(encrypted_input);
+            fclose(decrypted_output);
+            return 1;
+        }
+        fwrite(decrypted, 1, decrypted_len, decrypted_output);
+    }
+    
+    RSA_free(rsa);
+    fclose(encrypted_input);
+    fclose(decrypted_output);
+    return 0;
+}
+----
+
+This approach uses a loop to read and encrypt/decrypt data in chunks because RSA has a size limitation on the data it can process in a single operation. The chunk sizes should be adjusted according to your specific RSA key size and requirements.
+
+Remember to adjust the buffer sizes, error handling, and file paths as needed for your application.
+
+= RSA Encryption and Decryption Programs
+
+This repository contains two C programs for RSA encryption and decryption. The provided Makefile allows you to build these programs using GCC (GNU Compiler Collection).
+
+== Prerequisites
+
+Before building and using these programs, ensure that you have the following prerequisites installed on your system:
+
+* GCC (GNU Compiler Collection)
+* OpenSSL library
+
+== Building the Programs
+
+To build the RSA encryption and decryption programs, follow these steps:
+
+1. Open a command prompt or terminal.
+
+2. Navigate to the directory where the `Makefile` and the source files (`rsa_encrypt.c`, `rsa_decrypt.c`, and `rsa_helper.c`) are located.
+
+3. Use the `make` command to build the programs. You can choose one of the following options:
+
+   * Build the RSA encryption program:
+     ```
+     make rsa_encrypt
+     ```
+
+   * Build the RSA decryption program:
+     ```
+     make rsa_decrypt
+     ```
+
+   * Build both programs:
+     ```
+     make all
+     ```
+== Running the Programs
+
+Once the programs are built, you can run them from the command line. The programs use RSA key files for encryption and decryption:
+
+* Generate RSA keys for development test:
+     ```
+     make keys
+     ```
+* Encrypts binary data using a public key and saves the encrypted data to a file:
+     ```
+     make encrypt
+     ```
+* Decrypts binary data using a private key and saves the decrypted data to a file.
+     ```
+     make decrypt
+     ```
+
+Make sure to provide the appropriate key files and input data as needed.
+
+== Cleaning Up
+
+To remove the generated executables and intermediate files, you can use the following command:
+     ```
+     make clean
+     ```
+
+This will clean the project directory and remove the executable files.
+
+== Adjusting Compiler Paths
+
+If you need to adjust the path to your GCC compiler, you can modify the `Makefile` by setting the `CC` variable to point to the correct compiler location.
+
+== Notes
+
+Please adjust the `CFLAGS` and `LDFLAGS` in the `Makefile` to match your specific requirements, including the OpenSSL library location and compiler flags.
+
+For any issues or questions, please refer to the documentation of the tools used or seek assistance from the community or your system administrator.
+
+
+This README  file provides an overview of the project, instructions for building, running, and cleaning the programs, and also mentions how to adjust the compiler path if needed. You can add more details or tailor it further to your specific project requirements.
