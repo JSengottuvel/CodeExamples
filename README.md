@@ -20,10 +20,11 @@ Example programs for the Windows 32-bit environment are located in the sub-folde
 
 Jayakumar Sengottuvel
 
+Copyright (c) 2023 Jayakumar Sengottuvel
+
 ## Contact
 
 If you have any questions or feedback, please feel free to contact us at [code@jayakumar.de](mailto:code@jayakumar.de).
 
 Happy Coding!
 
-Copyright (c) 2023 Jayakumar Sengottuvel

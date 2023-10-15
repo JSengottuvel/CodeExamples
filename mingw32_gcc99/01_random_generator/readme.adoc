@@ -1,0 +1,74 @@
+= Random Number Generation with OpenSSL
+Author: Jayakumar Sengottuvel
+Date: 15.10.2023
+
+== Overview
+
+This is a simple example program demonstrating how to generate random numbers using OpenSSL in a Windows 32-bit environment with MinGW GCC and C99. The program generates a random key and initialization vector (IV) using the OpenSSL library's random number generator.
+
+== Prerequisites
+
+Before compiling and running this program, ensure that you have the following:
+
+- MinGW GCC compiler installed on your Windows system.
+- OpenSSL library for Windows. You can download it from [OpenSSL website](https://www.openssl.org/community/binaries.html) or install it using a package manager.
+
+Here is setup instruction for required toolchain  https://github.com/JSengottuvel/CodeExamples/blob/main/mingw32_gcc99/00_build_env/readme.adoc
+
+
+== Building and Running
+
+To build and run the program, you can use the provided Makefile. Simply run the following commands:
+
+1. To build the program:
+
+```bash
+make
+```
+
+This will compile the C code using the MinGW GCC compiler and generate the executable `random_demo.exe`.
+
+2. To run the program:
+
+```bash
+make run
+```
+
+This will execute the `random_demo.exe` program, which generates random key and IV values and displays them.
+
+3. To clean up and remove the compiled files:
+
+```bash
+make clean
+```
+
+== Program Output
+
+When you run the program, you will see the following output:
+
+```
+Demo program to generate RANDOM numbers using OpenSSL
+on Windows32 environment with MinGW GCC and C99
+Copyright (c) 2023 Jayakumar Sengottuvel
+
+Random Key (Hexadecimal): 5a 45 e9 15 b6 03 4d 60 2f 99 e7 99 61 fc a3 14
+Random IV  (Decimal)    : 82 189 31 55 225 195 51 36 172 85 220 30 248 186 53 75
+```
+
+The program initializes the OpenSSL library, generates random key and IV values, and displays them in both hexadecimal and decimal formats.
+
+== License
+
+MIT License - Feel free to modify and use this code as needed for your projects.
+
+Copyright (c) 2023 Jayakumar Sengottuvel
+
+== Author
+
+- [Jayakumar Sengottuvel] (https://github.com/JSengottuvel)
+
+=== Contact
+
+If you have any questions or feedback, please feel free to contact us at [code@jayakumar.de](mailto:code@jayakumar.de).
+
+Happy Coding!

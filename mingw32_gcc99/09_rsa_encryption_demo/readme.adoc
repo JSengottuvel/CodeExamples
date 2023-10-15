@@ -220,3 +220,13 @@ If you encounter any issues or have suggestions for improvement, please create a
 MIT License
 
 Copyright (c) 2023 Jayakumar Sengottuvel
+
+== Author
+
+- [Jayakumar Sengottuvel] (https://github.com/JSengottuvel)
+
+=== Contact
+
+If you have any questions or feedback, please feel free to contact us at [code@jayakumar.de](mailto:code@jayakumar.de).
+
+Happy Coding!
